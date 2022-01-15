@@ -1,0 +1,127 @@
+TODO:
+
+0. Check for input file extention => if !.c then error, else start obfuscation
+1. Parse input file content => take each line and put it in a list
+2. Find all key syntaxes in c
+3. Define a macro for each syntax, and Put it in a list/dictionary
+4. Create new file and put the lines to be added inside a list
+6. Iterate through the list of initial content
+5. If the lines contain empty line, #include, or #define => just add them to the new list (for the output file) 
+else obfuscate thenm => if a symbol finds itself on a line => obfuscate it and add its macro to the new list
+6. write in the output file, the content of the new list
+
+7. 
+   /*
+
+        Ei o poza
+        citesti din ea biti intr-un array[byte]
+
+        File poza = new File("poza");
+
+        byte[] contentPhoto = Files.readAllBytes(Paths.get("numeFisier.jpg"));
+
+
+        Faci 3 random de 3 numere random :
+        Random r1 = new Raondm( new Random(0,100));
+        Random r2 = new Random( new Random(0, 100));
+        Random r3 = new Random( new Random(0, 100));
+
+        r1, r2, r3;
+
+        byte b1 = contentPhoto.get(r1);
+        byte b2 = contentPhoto.get(r2);
+        byte b3 = contentPhoto.get(r3);
+
+        byte t = (b1 >> b2 << b3) || (b2 ^ b1) ;
+        Random r = new Random((int)t);
+
+        fileName = fileName + r + ".c";
+
+
+     */
+
+
+     // copiez toate liniile de tip: #include, #define, linir goala
+
+
+
+    static final String[] symbols = {
+            "unsigned", "long", "int", "double", "float", "char", "void", "short", "signed", "true", "false",
+            "printf", "scanf", "sizeof", "for", "while", "do", "if", "else", "goto", "auto", "break", "case",
+            "const", "continue", "enum", "main", "default", "extern", "register", "static", "return", "switch",
+            "struct", "typedef", "union", "volatile", "rand", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+            "fopen", "feof", "fflush", "fgets", "fprintf", "fscanf", "fread", "fwrite", "fclose", "ftell", "fseek",
+            "getch", "getchar", "strstr", "strncpy", "strncpm", "strlen", "strncat", "strcat", "strchr", "strcpy",
+            "strcmp", "strtok", "memcmp", "memchr",  "memset",  "malloc", "memcpy", "free", "atof", "atol", "atoi"
+    };
+
+    static final String[] obfuscations = {
+            "__/_", "_/_", "*|_", "_____", "______", "-&!-", "_*_", "_!_", "-_|_-", ":>", ":<",
+            "%_%", "@_@", "#p#", "$s$", "|_|_|", "|d|", "_^_", "-^-", "(|)", "$_$", "~_~", "_~_",
+            "_g_", "|_/", "<,>", "`_o`", "_e|", "_i_", "_x_", "~b~", "_r_", "~z~",
+            "_org_", "|df_t|", "_U_", "_:_", "-()-", "O", "I", "Z", "E", "A", "S", "G", "T", "B", "P",
+            "_m_/", "/|?", "-*-", "_**_", "_***)", "#_#", "o_o", "o_0", "*_0", "0_*", "&//",
+            "4_v_4", "c_gt", "%)(_", "c*_]", "[-_-]", ">:D", "_J)", "$#*_", "c_s", "c_y_s",
+            "(r)/", "*tk_s", ":~:", "m_c_m", "m_s_m",  "_br*/", "^_^", ":c", "|:o", "t_o]", "[o_/"
+    };
+
+
+
+    //problema mea
+
+                for(int j = 0; j < forObfuscationList.size(); j++) {
+                System.out.println("old line: " + forObfuscationList.get(j));
+                String newLine = "";
+                int countObfPerLine = 0;
+                for(int k = 0; k < macrosList.size(); k++) {
+                    if(forObfuscationList.get(j).contains(macrosList.get(k).split("\\ ")[2])) {
+                        newLine = forObfuscationList.get(j).replaceAll(macrosList.get(k).split("\\ ")[2],
+                                macrosList.get(k).split("\\ ")[1]);
+                        System.out.println("new line: " + newLine);
+
+                        if(!finalContentList.contains(macrosList.get(k))) {
+                           finalContentList.add(macrosList.get(k));
+                           finalContentList.add("\n");
+                       }
+                        countObfPerLine++;
+                    }
+                }
+                if(countObfPerLine == 0) {
+                    obfuscatedList.add(forObfuscationList.get(j));
+                }
+                obfuscatedList.add(newLine);
+                obfuscatedList.add("\n");
+            }
+
+
+
+        -------------------------------------------------------------------------
+
+                    for(int j = 0; j < forObfuscationList.size(); j++) {
+                System.out.println("old line: " + forObfuscationList.get(j));
+                int countObfPerLine = 0;
+                int k = 0;
+                String newLine = forObfuscationList.get(j).replaceAll(macrosList.get(k).split("\\ ")[2],
+                        macrosList.get(k).split("\\ ")[1]);
+                while (k < macrosList.size()) {
+//                for(int k = 0; k < macrosList.size(); k++) {
+//                    if (forObfuscationList.get(j).contains(macrosList.get(k).split("\\ ")[2])) {
+                        newLine = newLine.replaceAll(macrosList.get(k).split("\\ ")[2],
+                                macrosList.get(k).split("\\ ")[1]);
+                        System.out.println("new line: " + newLine);
+
+                        if (!finalContentList.contains(macrosList.get(k))) {
+                            finalContentList.add(macrosList.get(k));
+                            finalContentList.add("\n");
+                        }
+                        countObfPerLine++;
+//                    }
+//                }
+                    k++;
+                }
+                if(countObfPerLine == 0) {
+                    obfuscatedList.add(forObfuscationList.get(j));
+                }
+                obfuscatedList.add(newLine);
+                obfuscatedList.add("\n");
+            }
